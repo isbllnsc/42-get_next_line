@@ -34,13 +34,14 @@ int	ft_strlen(char *s)
 	int	i;
 
 	i = 0;
-	while (s[++i]);
+	while (s[i])
+		i++;
 	return (i);
 }
 
 char	*ft_strjoin(char *s1, char *s2)
 {
-	char    *s3;
+	char	*s3;
 	int		i;
 	int		j;
 
@@ -59,11 +60,3 @@ char	*ft_strjoin(char *s1, char *s2)
 	s3[i] = '\0';
 	return (s3);
 }
-
-/*
-int	main()
-{
-	printf("ft_strlen: %d\n", ft_strlen("isa"));
-	printf("ft_strjoin: %s\n", ft_strjoin("isa", "bella"));
-}
-*/

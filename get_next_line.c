@@ -14,10 +14,10 @@
 
 char	*get_next_line(int fd)
 {
-    static char	*stash[OPEN_MAX];
-	char	*line;
-    char	buffer[BUFFER_SIZE + 1];
-	ssize_t	bytes_read;
+	static char	*stash[OPEN_MAX];
+	char		*line;
+	char		buffer[BUFFER_SIZE + 1];
+	ssize_t		bytes_read;
 
 	bytes_read = 0;
 	if (fd < 0 || BUFFER_SIZE <= 0)
@@ -28,14 +28,14 @@ char	*get_next_line(int fd)
 		if (bytes_read == -1)
 			return (NULL);
 		if (bytes_read <= 0)
-			break;
+			break ;
 		buffer[bytes_read] = '\0';
 		stash[fd] = ft_strjoin(stash[fd], buffer);
+	}
+	if (!stash[fd] || stash[fd][0] == '\0')
+	{
+		free(stash[fd]);
+		stash[fd] = NULL;
+		return (NULL);
+	}
 }
-
-		if (!stash[fd] || stash[fd][0] == '\0')
-		{
-			free(stash[fd]);
-			stash[fd] = NULL;
-			return (NULL);
-		}
