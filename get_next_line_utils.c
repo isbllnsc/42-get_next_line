@@ -42,24 +42,24 @@ char	*ft_strjoin(char *s1, char *s2)
 			return (NULL);
 		s1[0] = '\0';
 	}
+	if (!s2)
+		return (s1);
 	i = 0;
-	j = 0;
 	while (s1[i])
 		i++;
+	j = 0;
 	while (s2[j])
 		j++;
 	s3 = malloc(i + j + 1);
 	if (!s3)
 		return (free(s1), NULL);
-	j = 0;
-	while (s1[j])
-	{
-		s3[j] = s1[j];
-	}
-	i = 0;
-	while (s2[i])
-		s3[j++] = s2[i++];
-	s3[j] = '\0';
+	i = -1;
+	while (s1[++i])
+		s3[i] = s1[i];
+	j = -1;
+	while (s2[++j])
+		s3[i + j] = s2[j];
+	s3[i + j] = '\0';
 	return (free(s1), s3);
 }
 

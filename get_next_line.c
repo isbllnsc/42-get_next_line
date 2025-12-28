@@ -17,19 +17,19 @@ char	*get_next_line(int fd)
 	char		buffer[BUFFER_SIZE + 1];
 	static char	*stash[OPEN_MAX];
 	char		*line;
-	ssize_t		bytesRead;
+	ssize_t		bytes_read;
 
-	bytesRead = 0;
 	if (fd < 0 || fd >= OPEN_MAX || BUFFER_SIZE <= 0)
 		return (NULL);
-	while (!check_newline(stash[fd]))
+	bytes_read = 1;
+	while (!check_newline(stash[fd]) && bytes_read > 0)
 	{
-		bytesRead = read(fd, buffer, BUFFER_SIZE);
-		if (bytesRead == -1)
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read < 0)
 			return (free(stash[fd]), stash[fd] = NULL, NULL);
-		if (bytesRead <= 0)
+		if (bytes_read == 0)
 			break ;
-		buffer[bytesRead] = '\0';
+		buffer[bytes_read] = '\0';
 		stash[fd] = ft_strjoin(stash[fd], buffer);
 	}
 	if (!stash[fd] || stash[fd][0] == '\0')
@@ -38,4 +38,3 @@ char	*get_next_line(int fd)
 	stash[fd] = clean_stash(stash[fd]);
 	return (line);
 }
-// read = ssize_t read(int fd, void *buf, size_t count);
