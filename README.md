@@ -11,90 +11,52 @@ Key learning objectives include: file descriptors and I/O, memory management, st
 
 ## Instructions
 
-### Function Prototype
+### Files
 
-```c
-char *get_next_line(int fd);
-````
+The project is composed of the following files:
 
-### Files Provided
+* `get_next_line.c` — main logic of the function
+* `get_next_line_utils.c` — helper functions
+* `get_next_line.h` — header file
+* `README.md`
 
-* `get_next_line.c`
-* `get_next_line_utils.c`
-* `get_next_line.h`
+---
 
 ### Compilation
 
-Compilation is done directly using `cc`:
+Compile the project by defining `BUFFER_SIZE` at compile time:
 
 ```bash
-cc -Wall -Wextra -Werror get_next_line.c get_next_line_utils.c
+cc -Wall -Wextra -Werror get_next_line.c get_next_line_utils.c main.c -D BUFFER_SIZE=42
 ```
 
-To test the function, you can add your own `main.c`:
+You may change the value of `BUFFER_SIZE` to test different behaviors:
 
 ```bash
-cc -Wall -Wextra -Werror get_next_line.c get_next_line_utils.c main.c
+-D BUFFER_SIZE=1
+-D BUFFER_SIZE=1000
 ```
-
-Or you can use the main function I made and left commented on the `get_next_line.c`.
-
-### Usage Example
-
-```c
-int fd = open("file.txt", O_RDONLY);
-char *line;
-
-while ((line = get_next_line(fd)) != NULL)
-{
-    printf("%s", line);
-    free(line);
-}
-close(fd);
-```
-
----
-!!!!!!!!!!!!!!!!! REVISAR !!!!!!!!!!!!!!!!!!
-## Algorithm Explanation and Justification
-
-The algorithm uses a **static buffer (stash)** to store unread data between function calls.
-This allows the function to remember leftover content after returning a line.
-
-### Steps:
-
-1. Read from the file descriptor into a temporary buffer.
-2. Append the buffer to the static stash.
-3. Check if a newline character (`\n`) exists in the stash.
-4. If found:
-
-   * Extract the line up to and including `\n`.
-   * Keep the remaining content in the stash for the next call.
-5. If EOF is reached:
-
-   * Return the remaining content (if any).
-   * Free the stash.
-
-### Why this approach?
-
-* Ensures **no data loss** between calls.
-* Handles files of any size.
-* Efficient memory usage by freeing unused buffers.
-* Fully compliant with the project constraints.
 
 ---
 
 ## Resources
 
-* Linux `read()` manual
-* 42 Network subject PDF
-* Articles about static variables in C
+### Documentation and references
 
-### AI Usage
+* `man 2 read`
+* `man 2 open`
+* `man 3 malloc`
+* `man 3 free`
+* 42 official subject PDF for *get_next_line*
+* cppreference.com (C standard library reference)
 
-AI was used to:
+### Use of Artificial Intelligence
 
-* Review the explanation clarity
-* Improve documentation structure
-* Ensure compliance with README requirements
+AI tools (ChatGPT) were used as a **learning and debugging assistant**, specifically to:
 
----
+* clarify concepts such as file descriptors, buffers, and static variables,
+* reason about memory management and edge cases,
+* review logic for helper functions (`ft_strjoin`, `extract_line`, `clean_stash`),
+* identify and correct compilation errors and undefined behaviors.
+
+All code was **written, adapted, and understood by the author**, with AI serving as a conceptual guide rather than an automated code generator.

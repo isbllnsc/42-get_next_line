@@ -10,32 +10,32 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// assinatura de read = ssize_t read(int fd, void *buf, size_t count);
+#include "get_next_line.h"
 
 char	*get_next_line(int fd)
 {
+	char		buffer[BUFFER_SIZE + 1];
 	static char	*stash[OPEN_MAX];
 	char		*line;
-	char		buffer[BUFFER_SIZE + 1];
-	ssize_t		bytes_read;
+	ssize_t		bytesRead;
 
-	bytes_read = 0;
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	bytesRead = 0;
+	if (fd < 0 || fd >= OPEN_MAX || BUFFER_SIZE <= 0)
 		return (NULL);
 	while (!check_newline(stash[fd]))
 	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read == -1)
-			return (NULL);
-		if (bytes_read <= 0)
+		bytesRead = read(fd, buffer, BUFFER_SIZE);
+		if (bytesRead == -1)
+			return (free(stash[fd]), stash[fd] = NULL, NULL);
+		if (bytesRead <= 0)
 			break ;
-		buffer[bytes_read] = '\0';
+		buffer[bytesRead] = '\0';
 		stash[fd] = ft_strjoin(stash[fd], buffer);
 	}
 	if (!stash[fd] || stash[fd][0] == '\0')
-	{
-		free(stash[fd]);
-		stash[fd] = NULL;
-		return (NULL);
-	}
+		return (free(stash[fd]), stash[fd] = NULL, NULL);
+	line = extract_line(stash[fd]);
+	stash[fd] = clean_stash(stash[fd]);
+	return (line);
 }
+// read = ssize_t read(int fd, void *buf, size_t count);

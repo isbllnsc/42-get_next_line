@@ -17,9 +17,14 @@
 # include <unistd.h>
 # include <limits.h>
 
-int		check_newline(char *s);
-int		ft_strlen(char *s);
-char	*ft_strjoin(char *s1, char *s2);
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
+
 char	*get_next_line(int fd);
+int		check_newline(char *s);
+char	*ft_strjoin(char *s1, char *s2);
+char	*extract_line(char *stash);
+char	*clean_stash(char *stash);
 
 #endif
