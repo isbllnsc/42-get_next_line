@@ -23,6 +23,7 @@
 
 char	*get_next_line(int fd);
 int		check_newline(char *s);
+void	*ft_calloc(size_t nmemb, size_t size);
 char	*ft_strjoin(char *s1, char *s2);
 char	*extract_line(char *stash);
 char	*clean_stash(char *stash);
